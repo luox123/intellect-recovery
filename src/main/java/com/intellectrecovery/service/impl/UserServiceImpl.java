@@ -1,15 +1,20 @@
 package com.intellectrecovery.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.intellectrecovery.domain.Doctor;
 import com.intellectrecovery.domain.Result;
 import com.intellectrecovery.domain.User;
 import com.intellectrecovery.mapper.UserMapper;
 import com.intellectrecovery.service.UserService;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
+import static com.intellectrecovery.constant.CacheKey.TOKEN_CACHE;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
@@ -19,12 +24,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Result login(String username, String password) {
-        return null;
+        User user = query().eq("username", username).one();
+        if(user != null) {
+            String code = DigestUtils.md5DigestAsHex(username.getBytes());
+            stringRedisTemplate.opsForValue().set(TOKEN_CACHE + username, code, 2, TimeUnit.HOURS);
+            return Result.success("登录成功", code);
+        } else {
+            return Result.fail("登录失败");
+        }
     }
 
     @Override
     public Result exit(String username) {
-        return null;
+        stringRedisTemplate.delete(TOKEN_CACHE + username);
+        return Result.success("退出成功");
     }
 
     @Override

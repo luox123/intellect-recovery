@@ -7,9 +7,13 @@ import com.intellectrecovery.mapper.DoctorMapper;
 import com.intellectrecovery.service.DoctorService;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
+import static com.intellectrecovery.constant.CacheKey.TOKEN_CACHE;
 
 @Service
 public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, Doctor> implements DoctorService {
@@ -19,12 +23,20 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, Doctor> impleme
 
     @Override
     public Result login(String username, String password) {
-        return null;
+        Doctor doctor = query().eq("username", username).one();
+        if(doctor != null) {
+            String code = DigestUtils.md5DigestAsHex(username.getBytes());
+            stringRedisTemplate.opsForValue().set(TOKEN_CACHE + username, code, 2, TimeUnit.HOURS);
+            return Result.success("登录成功", code);
+        } else {
+            return Result.fail("登录失败");
+        }
     }
 
     @Override
     public Result exit(String username) {
-        return null;
+        stringRedisTemplate.delete(TOKEN_CACHE + username);
+        return Result.success("退出成功");
     }
 
     @Override
