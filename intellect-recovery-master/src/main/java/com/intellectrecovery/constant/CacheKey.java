@@ -1,9 +1,0 @@
-package com.intellectrecovery.constant;
-
-public class CacheKey {
-
-    public final static String CODE_CACHE = "user:code:";
-
-    public final static String TOKEN_CACHE = "user:token:";
-
-}
