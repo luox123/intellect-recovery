@@ -22,5 +22,6 @@ public class User {
     private String addressCounty;
     private String addressDetail;
     private String birth;
+    private Integer status;
 
 }

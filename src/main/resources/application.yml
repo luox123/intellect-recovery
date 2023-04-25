@@ -17,3 +17,7 @@ spring:
         max-idle: 8
         min-idle: 0
         max-wait: 100ms
+
+admin:
+  username: admin123456
+  password: admin123456

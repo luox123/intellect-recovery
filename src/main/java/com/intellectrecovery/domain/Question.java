@@ -7,19 +7,27 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Doctor {
+@AllArgsConstructor
+public class Question {
 
     @TableId(type = IdType.AUTO)
     private Integer id;
-    private String username;
-    private String password;
-    private String name;
-    private String tel;
-    private String hospital;
-    private String department;
-    private String jobTitle;
-    private Integer status;
+    /**
+     * 题干
+     */
+    private String questionStem;
+    /**
+     * 题目描述
+     */
+    private String message;
+    /**
+     * 所属量表
+     */
+    private String type;
+    /**
+     * 分值
+     */
+    private Integer score;
 
 }
