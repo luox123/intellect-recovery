@@ -1,9 +1,12 @@
 package com.intellectrecovery.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.intellectrecovery.domain.Doctor;
 import com.intellectrecovery.domain.Result;
 import com.intellectrecovery.domain.User;
+import com.intellectrecovery.domain.UserData;
+import com.intellectrecovery.mapper.UserDataMapper;
 import com.intellectrecovery.mapper.UserMapper;
 import com.intellectrecovery.service.UserService;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -11,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -21,6 +26,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Resource
     StringRedisTemplate stringRedisTemplate;
+
+    @Resource
+    UserDataMapper userDataMapper;
 
     @Override
     public Result login(String username, String password) {
@@ -42,6 +50,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Result register(String username, String password) {
+        String month = new SimpleDateFormat("MM").format(new Date());
+        UserData userData = userDataMapper.selectOne(new QueryWrapper<UserData>().eq("month", month));
+        if(userData == null) {
+            userData = new UserData(null, month, 1, 0, 0);
+            userDataMapper.insert(userData);
+        } else {
+            userData.setUserNum(userData.getUserNum() + 1);
+            userDataMapper.updateById(userData);
+        }
         User user = query().eq("username", username).one();
         if(user == null) {
             user = new User();

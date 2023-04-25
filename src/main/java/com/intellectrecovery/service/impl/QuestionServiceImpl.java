@@ -5,7 +5,9 @@ import com.intellectrecovery.domain.Question;
 import com.intellectrecovery.domain.Result;
 import com.intellectrecovery.mapper.QuestionMapper;
 import com.intellectrecovery.service.QuestionService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> implements QuestionService {
 
     @Override

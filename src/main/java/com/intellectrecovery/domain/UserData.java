@@ -9,29 +9,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Question {
+public class UserData {
 
     @TableId(type = IdType.AUTO)
     private Integer id;
-    /**
-     * 题干
-     */
-    private String questionStem;
-    /**
-     * 题目描述
-     */
-    private String message;
-    /**
-     * 所属量表
-     */
-    private String type;
-    /**
-     * 分值
-     */
-    private Integer score;
-    /**
-     * 答案
-     */
-    private String answer;
+    private String month;
+    private int doctorNum;
+    private int userNum;
+    private int scaleNum;
 
 }
