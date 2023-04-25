@@ -52,4 +52,24 @@ public interface DoctorService extends IService<Doctor> {
      */
     Result getDoctorByUsername(String username);
 
+    /**
+     * 修改医生信息
+     * @param doctor 医生信息
+     * @return 是否成功
+     */
+    Result updateDoctor(Doctor doctor);
+
+    /**
+     * 删除医生信息
+     * @param doctor 医生信息
+     * @return 是否成功
+     */
+    Result removeDoctor(Doctor doctor);
+
+    /**
+     * 获取所有医生信息
+     * @return 所有医生信息
+     */
+    Result getAll();
+
 }

@@ -61,4 +61,14 @@ public class UserController {
         }
     }
 
+    @PatchMapping("/update")
+    public Result updateUser(@RequestBody User user, @RequestHeader("token") String token) {
+        String mode = stringRedisTemplate.opsForValue().get(TOKEN_CACHE + user.getUsername());
+        if(Objects.equals(mode, token)) {
+            return userService.updateUser(user);
+        } else {
+            return new Result(403, "鉴权失败", null);
+        }
+    }
+
 }

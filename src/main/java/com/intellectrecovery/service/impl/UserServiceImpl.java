@@ -102,4 +102,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return Result.success("查找成功", user);
         }
     }
+
+    @Override
+    public Result updateUser(User user) {
+        updateById(user);
+        return Result.success("修改成功");
+    }
+
+    @Override
+    public Result removeUser(User user) {
+        removeById(user.getId());
+        return Result.success("删除成功");
+    }
+
+    @Override
+    public Result getAll() {
+        return Result.success("获取成功", query().list());
+    }
 }

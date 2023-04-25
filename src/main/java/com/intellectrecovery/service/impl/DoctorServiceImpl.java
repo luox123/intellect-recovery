@@ -101,4 +101,22 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, Doctor> impleme
             return Result.success("查找成功", doctor);
         }
     }
+
+    @Override
+    public Result updateDoctor(Doctor doctor) {
+        updateById(doctor);
+        return Result.success("修改成功");
+    }
+
+    @Override
+    public Result removeDoctor(Doctor doctor) {
+        removeById(doctor.getId());
+        return Result.success("删除成功");
+    }
+
+    @Override
+    public Result getAll() {
+        return Result.success("获取成功", query().list());
+    }
+
 }

@@ -52,4 +52,24 @@ public interface UserService extends IService<User> {
      */
     Result getUserByUsername(String username);
 
+    /**
+     * 修改用户信息
+     * @param user 用户信息
+     * @return 是否成功
+     */
+    Result updateUser(User user);
+
+    /**
+     * 删除用户信息
+     * @param user 用户信息
+     * @return 是否成功
+     */
+    Result removeUser(User user);
+
+    /**
+     * 获取所有用户信息
+     * @return 所有用户信息
+     */
+    Result getAll();
+
 }

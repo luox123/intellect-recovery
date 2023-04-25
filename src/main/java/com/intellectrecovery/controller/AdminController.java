@@ -1,10 +1,13 @@
 package com.intellectrecovery.controller;
 
+import com.intellectrecovery.domain.Doctor;
 import com.intellectrecovery.domain.Question;
 import com.intellectrecovery.domain.Result;
 import com.intellectrecovery.domain.User;
+import com.intellectrecovery.service.DoctorService;
 import com.intellectrecovery.service.QuestionService;
 import com.intellectrecovery.service.UserDataService;
+import com.intellectrecovery.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.DigestUtils;
@@ -26,6 +29,12 @@ public class AdminController {
 
     @Resource
     QuestionService questionService;
+
+    @Resource
+    UserService userService;
+
+    @Resource
+    DoctorService doctorService;
 
     @Resource
     StringRedisTemplate stringRedisTemplate;
@@ -135,6 +144,66 @@ public class AdminController {
         String mode = stringRedisTemplate.opsForValue().get(TOKEN_CACHE + adminUsername);
         if(Objects.equals(mode, token)) {
             return questionService.addQuestion(question);
+        } else {
+            return new Result(403, "鉴权失败", null);
+        }
+    }
+
+    @GetMapping("/user/getAll")
+    public Result getAllUser(@RequestHeader("token") String token) {
+        String mode = stringRedisTemplate.opsForValue().get(TOKEN_CACHE + adminUsername);
+        if(Objects.equals(mode, token)) {
+            return userService.getAll();
+        } else {
+            return new Result(403, "鉴权失败", null);
+        }
+    }
+
+    @PatchMapping("/user/update")
+    public Result updateUser(@RequestBody User user, @RequestHeader("token") String token) {
+        String mode = stringRedisTemplate.opsForValue().get(TOKEN_CACHE + adminUsername);
+        if(Objects.equals(mode, token)) {
+            return userService.updateUser(user);
+        } else {
+            return new Result(403, "鉴权失败", null);
+        }
+    }
+
+    @DeleteMapping("/user/remove")
+    public Result removeUser(@RequestBody User user, @RequestHeader("token") String token) {
+        String mode = stringRedisTemplate.opsForValue().get(TOKEN_CACHE + adminUsername);
+        if(Objects.equals(mode, token)) {
+            return userService.removeUser(user);
+        } else {
+            return new Result(403, "鉴权失败", null);
+        }
+    }
+
+    @GetMapping("/doctor/getAll")
+    public  Result getAllDoctor(@RequestHeader("token") String token) {
+        String mode = stringRedisTemplate.opsForValue().get(TOKEN_CACHE + adminUsername);
+        if(Objects.equals(mode, token)) {
+            return doctorService.getAll();
+        } else {
+            return new Result(403, "鉴权失败", null);
+        }
+    }
+
+    @PatchMapping("/doctor/update")
+    public Result updateDoctor(@RequestBody Doctor doctor, @RequestHeader("token") String token) {
+        String mode = stringRedisTemplate.opsForValue().get(TOKEN_CACHE + adminUsername);
+        if(Objects.equals(mode, token)) {
+            return doctorService.updateDoctor(doctor);
+        } else {
+            return new Result(403, "鉴权失败", null);
+        }
+    }
+
+    @DeleteMapping("/doctor/remove")
+    public Result removeDoctor(@RequestBody Doctor doctor, @RequestHeader("token") String token) {
+        String mode = stringRedisTemplate.opsForValue().get(TOKEN_CACHE + adminUsername);
+        if(Objects.equals(mode, token)) {
+            return doctorService.removeDoctor(doctor);
         } else {
             return new Result(403, "鉴权失败", null);
         }

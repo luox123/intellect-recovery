@@ -60,4 +60,14 @@ public class DoctorController {
         }
     }
 
+    @PatchMapping("/update")
+    public Result updateDoctor(@RequestBody Doctor doctor, @RequestHeader("token") String token) {
+        String mode = stringRedisTemplate.opsForValue().get(TOKEN_CACHE + doctor.getUsername());
+        if(Objects.equals(mode, token)) {
+            return doctorService.updateDoctor(doctor);
+        } else {
+            return new Result(403, "鉴权失败", null);
+        }
+    }
+
 }
