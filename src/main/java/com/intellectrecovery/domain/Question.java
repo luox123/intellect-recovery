@@ -26,6 +26,10 @@ public class Question {
      */
     private String type;
     /**
+     * 题型
+     */
+    private String form;
+    /**
      * 分值
      */
     private Integer score;

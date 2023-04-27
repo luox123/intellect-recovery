@@ -34,7 +34,7 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, Doctor> impleme
         Doctor doctor = query().eq("username", username).one();
         if(doctor != null) {
             String code = DigestUtils.md5DigestAsHex(username.getBytes());
-            stringRedisTemplate.opsForValue().set(TOKEN_CACHE + username, code, 2, TimeUnit.HOURS);
+            stringRedisTemplate.opsForValue().set(TOKEN_CACHE + code, username, 2, TimeUnit.HOURS);
             return Result.success("登录成功", code);
         } else {
             return Result.fail("登录失败");
@@ -43,7 +43,8 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, Doctor> impleme
 
     @Override
     public Result exit(String username) {
-        stringRedisTemplate.delete(TOKEN_CACHE + username);
+        String code = DigestUtils.md5DigestAsHex(username.getBytes());
+        stringRedisTemplate.delete(TOKEN_CACHE + code);
         return Result.success("退出成功");
     }
 

@@ -6,6 +6,7 @@ import com.intellectrecovery.domain.Doctor;
 import com.intellectrecovery.domain.Result;
 import com.intellectrecovery.domain.User;
 import com.intellectrecovery.domain.UserData;
+import com.intellectrecovery.mapper.ComplexMapper;
 import com.intellectrecovery.mapper.UserDataMapper;
 import com.intellectrecovery.mapper.UserMapper;
 import com.intellectrecovery.service.UserService;
@@ -30,12 +31,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Resource
     UserDataMapper userDataMapper;
 
+    @Resource
+    ComplexMapper complexMapper;
+
     @Override
     public Result login(String username, String password) {
         User user = query().eq("username", username).one();
         if(user != null) {
             String code = DigestUtils.md5DigestAsHex(username.getBytes());
-            stringRedisTemplate.opsForValue().set(TOKEN_CACHE + username, code, 2, TimeUnit.HOURS);
+            stringRedisTemplate.opsForValue().set(TOKEN_CACHE + code, username, 2, TimeUnit.HOURS);
             return Result.success("登录成功", code);
         } else {
             return Result.fail("登录失败");
@@ -44,7 +48,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Result exit(String username) {
-        stringRedisTemplate.delete(TOKEN_CACHE + username);
+        String code = DigestUtils.md5DigestAsHex(username.getBytes());
+        stringRedisTemplate.delete(TOKEN_CACHE + code);
         return Result.success("退出成功");
     }
 
@@ -118,5 +123,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Result getAll() {
         return Result.success("获取成功", query().list());
+    }
+
+    @Override
+    public Result saveScore(int uId, int score) {
+        String format = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").format(new Date());
+        complexMapper.saveScore(uId, score, format);
+        return Result.success("保存成功");
     }
 }

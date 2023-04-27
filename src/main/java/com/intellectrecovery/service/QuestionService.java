@@ -41,4 +41,12 @@ public interface QuestionService extends IService<Question> {
      */
     Result addQuestion(Question question);
 
+    /**
+     * 判断题目是否正确
+     * @param id 题目id
+     * @param answer 患者答案
+     * @return 是否正确
+     */
+    boolean judge(int id, String answer);
+
 }

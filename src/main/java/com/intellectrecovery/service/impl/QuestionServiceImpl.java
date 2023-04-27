@@ -7,6 +7,8 @@ import com.intellectrecovery.mapper.QuestionMapper;
 import com.intellectrecovery.service.QuestionService;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> implements QuestionService {
 
@@ -35,6 +37,12 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     public Result addQuestion(Question question) {
         save(question);
         return Result.success("新增成功");
+    }
+
+    @Override
+    public boolean judge(int id, String answer) {
+        Question question = query().eq("id", id).one();
+        return Objects.equals(answer, question.getAnswer());
     }
 
 }

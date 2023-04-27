@@ -72,4 +72,12 @@ public interface UserService extends IService<User> {
      */
     Result getAll();
 
+    /**
+     * 保存分数
+     * @param uId 患者id
+     * @param score 分数
+     * @return 是否成功
+     */
+    Result saveScore(int uId, int score);
+
 }
