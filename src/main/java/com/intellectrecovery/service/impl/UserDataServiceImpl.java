@@ -42,7 +42,11 @@ public class UserDataServiceImpl extends ServiceImpl<UserDataMapper, UserData> i
     @Override
     public Result getUsersByMonth(String month) {
         UserData monthData = query().eq("month", month).one();
-        return Result.success("获取成功", monthData.getUserNum() + monthData.getDoctorNum());
+        if(monthData == null) {
+            return Result.success("获取成功", 0);
+        } else {
+            return Result.success("获取成功", monthData.getUserNum() + monthData.getDoctorNum());
+        }
     }
 
 }
