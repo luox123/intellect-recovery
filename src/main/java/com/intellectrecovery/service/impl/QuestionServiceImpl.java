@@ -42,6 +42,9 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     @Override
     public boolean judge(int id, String answer) {
         Question question = query().eq("id", id).one();
+        if(question == null) {
+            return false;
+        }
         return Objects.equals(answer, question.getAnswer());
     }
 

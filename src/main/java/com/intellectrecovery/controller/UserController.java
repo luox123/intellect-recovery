@@ -159,11 +159,11 @@ public class UserController {
 
     /**
      * 保存患者本次测试分数
-     * @param score 分数
      * @return 是否成功
      */
     @PostMapping("/saveScore")
-    public Result saveScore(@RequestBody int score, @RequestHeader("token") String token) {
+    public Result saveScore(@RequestBody Map<String, Integer> map, @RequestHeader("token") String token) {
+        Integer score = map.get("score");
         String username = stringRedisTemplate.opsForValue().get(TOKEN_CACHE + token);
         if(username != null) {
             User user = (User) userService.getUserByUsername(username).getData();
