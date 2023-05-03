@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.intellectrecovery.constant.CacheKey.TOKEN_CACHE;
@@ -167,6 +168,69 @@ public class UserController {
         } else {
             return new Result(403, "鉴权失败", null);
         }
+    }
+
+    public Result judgeAudio () {
+        return null;
+    }
+
+    public Result judgeImage () {
+        return null;
+    }
+
+    /**
+     * 第一题判断
+     * @param map { year: "2023", season: "春季", month: "05", date: "03", day: "三" }
+     * @return 是否正确
+     */
+    @PostMapping("/judge/1")
+    public Result judgeNo1(@RequestBody Map<String, String> map) {
+        String year = map.get("year");
+        String season = map.get("season");
+        String month = map.get("month");
+        String date = map.get("date");
+        String day = map.get("day");
+        Date now = new Date();
+        List<Boolean> res = new  ArrayList<>();
+        // year
+        if(Objects.equals(new SimpleDateFormat("yyyy").format(now), year)) {
+            res.add(true);
+        } else {
+            res.add(false);
+        }
+        // season
+        String seasonNow = "";
+        switch(new SimpleDateFormat("MM").format(now)) {
+            case "03": case "04": case "05" : seasonNow = "春季"; break;
+            case "06": case "07": case "08" : seasonNow = "夏季"; break;
+            case "09": case "10": case "11" : seasonNow = "秋季"; break;
+            case "12": case "01": case "02" : seasonNow = "冬季"; break;
+            default: seasonNow = "夏季";
+        }
+        if(Objects.equals(seasonNow, season)) {
+            res.add(true);
+        } else {
+            res.add(false);
+        }
+        // month
+        if(Objects.equals(new SimpleDateFormat("MM").format(now), month)) {
+            res.add(true);
+        } else {
+            res.add(false);
+        }
+        // date
+        if(Objects.equals(new SimpleDateFormat("dd").format(now), date)) {
+            res.add(true);
+        } else {
+            res.add(false);
+        }
+        // day
+        if(Objects.equals(new SimpleDateFormat("EEEE").format(now), "星期" + day)) {
+            res.add(true);
+        } else {
+            res.add(false);
+        }
+        return Result.success("判断成功", res);
     }
 
 }
