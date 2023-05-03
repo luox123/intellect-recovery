@@ -182,13 +182,13 @@ public class UserController {
     public Result judgeAudio (@RequestParam("record1")MultipartFile audio, @RequestParam("_record1") String answer) {
         System.out.println(audio);
         System.out.println(answer);
-        return Result.success("比对成功", 81);
+        return Result.success("比对成功", new Random().nextInt(20, 95));
     }
     @PostMapping("/judge/image")
     public Result judgeImage (@RequestParam("pic1")MultipartFile img1, @RequestParam("_pic1")MultipartFile img2) {
         System.out.println(img1);
         System.out.println(img2);
-        return Result.success("比对成功", new Random().nextInt(20, 100));
+        return Result.success("比对成功", new Random().nextInt(20, 95));
     }
 
     /**
