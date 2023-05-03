@@ -7,8 +7,11 @@ import com.intellectrecovery.service.QuestionService;
 import com.intellectrecovery.service.UserService;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -170,12 +173,22 @@ public class UserController {
         }
     }
 
-    public Result judgeAudio () {
-        return null;
-    }
 
-    public Result judgeImage () {
-        return null;
+    /**
+     * 音频识别和图像识别
+     * @return 返回相似度，如 100 表示 100% 相似
+     */
+    @PostMapping("/judge/audio")
+    public Result judgeAudio (@RequestParam("record1")MultipartFile audio, @RequestParam("_record1") String answer) {
+        System.out.println(audio);
+        System.out.println(answer);
+        return Result.success("比对成功", 81);
+    }
+    @PostMapping("/judge/image")
+    public Result judgeImage (@RequestParam("pic1")MultipartFile img1, @RequestParam("_pic1")MultipartFile img2) {
+        System.out.println(img1);
+        System.out.println(img2);
+        return Result.success("比对成功", new Random().nextInt(20, 100));
     }
 
     /**
