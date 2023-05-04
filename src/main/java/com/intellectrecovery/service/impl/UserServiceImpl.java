@@ -127,7 +127,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Result saveScore(int uId, int score) {
-        String format = new SimpleDateFormat("yyyy:MM:dd HH/mm/ss").format(new Date());
+        String format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
         complexMapper.saveScore(uId, score, format);
         return Result.success("保存成功");
     }

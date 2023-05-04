@@ -98,7 +98,7 @@ public class UserController {
         String username = stringRedisTemplate.opsForValue().get(TOKEN_CACHE + token);
         if(username != null) {
             User user = (User) userService.getUserByUsername(username).getData();
-            Map<String, String> historyScore = complexMapper.getHistoryScore(user.getId());
+            List<Map<String, String>> historyScore = complexMapper.getHistoryScore(user.getId());
             return Result.success("获取成功", historyScore);
         } else {
             return new Result(403, "鉴权失败", null);
