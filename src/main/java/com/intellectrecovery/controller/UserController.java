@@ -179,16 +179,22 @@ public class UserController {
      * @return 返回相似度，如 100 表示 100% 相似
      */
     @PostMapping("/judge/audio")
-    public Result judgeAudio (@RequestParam("record1")MultipartFile audio, @RequestParam("_record1") String answer) {
+    public Result judgeAudio (@RequestParam("record1")byte[] audio, @RequestParam("_record1") String answer) {
         System.out.println(audio);
         System.out.println(answer);
         return Result.success("比对成功", new Random().nextInt(20, 95));
     }
     @PostMapping("/judge/image")
-    public Result judgeImage (@RequestParam("pic1")MultipartFile img1, @RequestParam("_pic1")MultipartFile img2) {
-        System.out.println(img1);
-        System.out.println(img2);
-        return Result.success("比对成功", new Random().nextInt(20, 95));
+    public Result judgeImage(@RequestParam("pic1") String base64Img1, @RequestParam("_pic1") String base64Img2) {
+        try {
+            // 将Base64字符串解码为字节数组
+            byte[] imgBytes1 = Base64.getDecoder().decode(base64Img1);
+            byte[] imgBytes2 = Base64.getDecoder().decode(base64Img2);
+            // 执行图片比对操作...
+            return Result.success("比对成功", new Random().nextInt(20, 95));
+        } catch (Exception e) {
+            return Result.fail("比对失败：" + e.getMessage());
+        }
     }
 
     /**
@@ -244,6 +250,17 @@ public class UserController {
             res.add(false);
         }
         return Result.success("判断成功", res);
+    }
+
+    @PostMapping("/sentence")
+    public Result judgeSentence(@RequestBody String sentence) {
+        boolean isComplete=false;
+        String trimmedSentence = sentence.trim();  // 去除句子两端的空格
+        if (!trimmedSentence.isEmpty()) {
+            char lastChar = trimmedSentence.charAt(trimmedSentence.length() - 1);
+            isComplete= lastChar == '.' || lastChar == '?' || lastChar == '!';
+        }
+        return Result.success("句子判断成功", isComplete);
     }
 
 }
