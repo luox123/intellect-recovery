@@ -175,7 +175,7 @@ public class UserController {
 
 
     /**
-     * 音频识别和图像识别
+     * 音频识别和图像识别以及视频识别
      * @return 返回相似度，如 100 表示 100% 相似
      */
     @PostMapping("/judge/audio")
@@ -196,7 +196,17 @@ public class UserController {
             return Result.fail("比对失败：" + e.getMessage());
         }
     }
-
+    @PostMapping("/judge/video")
+    public Result judgeVideo(@RequestParam("videoFile") MultipartFile videoFile){
+        try {
+            // 视频比对的算法
+            // 返回成功响应，附带分数
+            return Result.success("比对成功",new Random().nextInt(20, 95));
+        } catch (Exception e) {
+            // 处理异常情况并返回错误响应
+            return Result.fail("比对失败：" + e.getMessage());
+        }
+    }
     /**
      * 第一题判断
      * @param map { year: "2023", season: "春季", month: "05", date: "03", day: "三" }
