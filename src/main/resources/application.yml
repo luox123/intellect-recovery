@@ -4,13 +4,13 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://43.142.136.160:3306/intellect_recovery
+    url: jdbc:mysql://60.204.218.7:3306/intellect_recovery
     username: root
-    password: 123456
+    password: Aa154695.
   redis:
     host: 43.142.136.160
     port: 6379
-    password: 330787456yazhi
+    password: Aa154695.
     lettuce:
       pool:
         max-active: 8
