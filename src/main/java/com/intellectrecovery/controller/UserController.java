@@ -179,17 +179,17 @@ public class UserController {
      * @return 返回相似度，如 100 表示 100% 相似
      */
     @PostMapping("/judge/audio")
-    public Result judgeAudio (@RequestParam("record1")byte[] audio, @RequestParam("_record1") String answer) {
+    public Result judgeAudio (@RequestParam("record1")MultipartFile audio, @RequestParam("_record1") String answer) {
         System.out.println(audio);
         System.out.println(answer);
         return Result.success("比对成功", new Random().nextInt(20, 95));
     }
     @PostMapping("/judge/image")
-    public Result judgeImage(@RequestParam("pic1") String base64Img1, @RequestParam("_pic1") String base64Img2) {
+    public Result judgeImage(@RequestParam("pic1") MultipartFile base64Img1, @RequestParam("_pic1") MultipartFile base64Img2) {
         try {
             // 将Base64字符串解码为字节数组
-            byte[] imgBytes1 = Base64.getDecoder().decode(base64Img1);
-            byte[] imgBytes2 = Base64.getDecoder().decode(base64Img2);
+//            byte[] imgBytes1 = Base64.getDecoder().decode(base64Img1);
+//            byte[] imgBytes2 = Base64.getDecoder().decode(base64Img2);
             // 执行图片比对操作...
             return Result.success("比对成功", new Random().nextInt(20, 95));
         } catch (Exception e) {
